@@ -1,0 +1,32 @@
+{% extends 'base.html ' %}
+{% load crispy_forms_tags %}
+{% block title%} Registration {% endblock title%}
+
+{% block content%}
+<body>
+
+<div class="container w-50 mt-3 p-4 ">
+    <h3 class="text-center mb-3"  style="margin-top:100px;">Register</h3>
+    <form action="" method="POST" novalidate>
+        {% csrf_token %}
+        {{form|crispy}}
+         <div class="row mb-3">
+            <div class="col">
+                <input class="form-control btn " style="background-color:#e76f51;" type="submit" value="Register"  >
+            </div>
+        </div>
+         <div class="row mb-3">
+            <div class="col text-center">
+              Already have an account <a href="{% url 'login_page' %}" >login here</a>
+            </div>
+        </div>
+
+
+
+
+
+    </form>
+</div>
+
+</body>
+{% endblock content%}

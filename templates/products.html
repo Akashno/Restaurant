@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block stylesheet%}
+<link rel="stylesheet" href="{% static 'css/products.css' %}">
+<style>
+.product{
+overflow:scroll;height:30rem;
+}
+::-webkit-scrollbar {
+display:none;
+}
+</style>
+{% endblock stylesheet%}
+{% block title%}
+product
+{% endblock title%}
+{% block content%}
+<body >
+
+       {% include '!sidebar.html'  %}
+
+    <div class="container-fluid  mt-3 p-4">
+        <div class="row  mb-2   " >
+            <h2 class="text-center h5">Add your favorite to the cart</h2>
+
+            <div class="col-md-6  col-sm-12 product" style="">
+                 {% for product in products %}
+                <div class="row   p-3 m-1" style="width:80%;">
+                     <div class="col-4"><img src="{{product.img.url}}" class="product_image" style="width:6rem;"  alt=""></div>
+                     <div class="col-6 h5"><p class="h6">{{product.name}}</p><p class="h5">Rs {{product.price}}</p></div>
+
+                    <div class="col-2 mt-2">
+                      <form action= "{% url 'add_cart' product.id %}" method="POST">{% csrf_token %}
+                        <input type="submit" value="+" class="btn btn-outline-primary">
+                            </form>
+                    </div>
+                </div>
+                 {% endfor %}
+            </div>
+            <div class="col-md-6  col-sm-12 ">
+
+                <div class="container-fluid " id="cart" >
+                    <h2 class="text-center">Your Cart</h2>
+
+
+                    <div class="container   p-3"  >
+                        {% if  found %}
+                        <div class="container p-3 rounded " >
+                            <div class="row " >
+                                <div class="col-5">Name</div>
+
+                                <div class="col-2">quantity</div>
+                                <div class="col-3">price per unit</div>
+                                <div class="col-2">total price</div>
+                            </div>
+                                                         <hr>
+
+                            {% for item in cart %}
+
+                            <div class="row  mb-1 fs-6" >
+
+                                <div class="col-1">
+                                     <form action= "{% url 'delete_cart' item.id %}" method="POST">{% csrf_token %}
+                        <input type="submit" value="-" class="btn btn-outline-danger    ">
+                            </form>
+
+                                </div>
+                                <div class="col-5">{{item.get_name}}</div>
+                                <div class="col-2">{{item.get_count}}</div>
+                                <div class="col-2">{{item.get_price}}</div>
+                                <div class="col-2">{{item.get_total}}</div>
+                            </div>
+                            {% endfor %}
+
+                            <hr>
+                            <div class="row ">
+                                 <div class="col-6">total number of items:</div>
+                                <div class="col-1">{{pc}}</div>
+                                <div class="col-3">total amount</div>
+                                <div class="col-2">Rs.{{pt}}</div>
+                            </div>
+
+
+                        </div>
+                        <div class="row">
+                            <div class="d-flex justify-content-between">
+                                <a href="{% url 'empty_cart' %}"><button class="btn btn-secondary mt-5">Reset</button></a>
+                                <a href="{% url 'payment' %}"><button class="btn btn-success mt-5 ">Order</button></a>
+
+
+
+                            </div>
+                        </div>
+                         {% else  %}
+                        <h5 class="alert alert-secondary">Your cart is empty</h5>
+                    {% endif %}
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+        </div>
+    </div>
+
+</body>
+{% endblock content%}

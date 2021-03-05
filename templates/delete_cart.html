@@ -1,0 +1,22 @@
+{% extends 'base.html ' %}
+
+{% block stylesheet%}
+<style>
+    body{
+    display:none;
+    }
+</style>
+{% endblock stylesheet%}
+
+{% block title%}
+ add_cart
+{% endblock title%}
+{% block content%}
+<body onload="document.forms['add_cart_form'].submit()">
+<form action="" method="POST" name="add_cart_form">
+    {%  csrf_token %}
+    {{product.name}}
+    <input type="submit" value="delete">
+</form>
+</body>
+{% endblock content%}

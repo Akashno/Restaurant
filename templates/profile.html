@@ -1,0 +1,94 @@
+{% extends 'base.html ' %}
+
+{% block stylesheet%}
+{% endblock stylesheet%}
+
+{% block title%}
+profile
+{% endblock title%}
+
+{% block content%}
+<body>
+        {% include '!sidebar.html'  %}
+
+<div class="container-fluid mt-4">
+    <div class="alert ">
+        {% for notification in notifications %}
+            <div class="alert alert-info">{{notification.notification}}</div>
+        {% endfor %}
+    </div>
+    <div class=" alert ">Profile Details
+        <hr>
+        <h3>username: {{request.user.username}}</h3>
+        <h6>First Name: {{request.user.first_name}}</h6>
+        <h6>Last Name: {{request.user.last_name}}</h6>
+        <h6>Email Id: {{request.user.email}}</h6>
+    </div>
+
+         {% for message in messages %}
+         <div class="alert alert-info">{{message}}</div>
+         {% endfor %}
+
+    <div class="row">
+<!--        product order -->
+<!--        product order-->
+        <div class="col-md-6 col-sm-12 p-2">
+              <div class="alert  ">Your Orders</div>
+                {% if not orders%}
+                <div class="alert alert-warning h4 text-center">You Havent Made Any Orders Yet</div>
+                {% endif %}
+                {% for order in orders %}
+                 <div class="row   p-3 m-5" style="width:80%;">
+                     <div class="col-md-4 col-sm-12 "><img src="{{order.product.img.url}}" class="product_image img-thumbnail" style="width:10rem;object-fit:contain;"  alt=""></div>
+                     <div class="col-md-3 col-sm-12 "><p class="h6">{{order.get_name}} </p><p class="h6">Rs {{order.get_price}}</p></div>
+                     <div class="col-md-1 col-sm-12 "><p class="h6">x{{order.get_count}}</p></div>
+                     <div class="col-md-4 col-sm-12 "><div class="h5">Total:{{order.get_total}}</div>
+                     {% if order.delivered %}
+                     <div class="alert  alert-success h6   " style="font-size:10px;">
+                         <p class="fw-bold">Your order for {{order.get_name}} has delivered </p>
+                         <small>Our staff will reach you soon</small>
+                     </div>
+                     {% else %}
+                     <div class="alert   alert-warning">
+                        <h6>Order will be verified and delivered soon</h6>
+                         <a href="{% url 'delete_order' order.id %}">
+                         <button class="btn btn-danger btn-sm ">Cancel Order</button>
+                        </a>
+                     </div>
+                     {% endif %}
+                     </div>
+                </div>
+                {% endfor %}
+        </div>
+
+<!--        table orders-->
+<!--        table orders-->
+        <div class="col-md-6    col-sm-12  p-2">
+              <div class="alert  ">Your table reservations</div>
+              {% if not reservations%}
+                <div class="alert alert-warning h4 text-center">You Havent Made Any reservations yet</div>
+                {% endif %}
+                {% for item in reservations %}
+
+                 <div class="row   p-3 m-5" style="width:80%;">
+                     <div class="col-md-4 col-sm-12">
+                            {% if item.table.reserved%}
+                <div class="alert alert-success h6 text-center">Reservation approved</div>
+                    {% else %}
+                      <div class="alert alert-warning h6 text-center">Reservation will be verified by the admin</div>
+
+                         {% endif %}
+                     </div>
+                     <div class="col-md-2 col-sm-12 "><p class="h6">Table Number: {{item.table.id}}</p></div>
+                     <div class="col-md-3 col-sm-12 h5">on {{item.date}} </div>
+                     <div class="col-md-3 col-sm-12 h5"> at {{item.time}}</div>
+                </div>
+                {% endfor %}
+
+        </div>
+<!--        table orders ends-->
+<!--        table orders ends-->
+    </div>
+</div>
+</body>
+{% endblock content%}
